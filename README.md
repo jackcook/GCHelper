@@ -11,6 +11,7 @@ GCHelper is a Swift implementation built off of the GameKitHelper class describe
 - Create a match in...
 - Just about everything is do-able with just one line of code
 
+---
 ## Implementation
 
 ### Authenticating the User
