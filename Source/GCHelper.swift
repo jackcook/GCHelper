@@ -155,7 +155,6 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
-        presentingViewController.navigationController?.popViewControllerAnimated(true)
     }
     
     func matchmakerViewController(viewController: GKMatchmakerViewController!, didFailWithError error: NSError!) {
