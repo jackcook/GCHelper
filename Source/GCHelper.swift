@@ -136,6 +136,16 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
+    func reportLeaderboardIdentifier(identifier: String, score: Int) {
+        var scoreObject = GKScore(leaderboardIdentifier: identifier)
+        scoreObject.value = Int64(score)
+        GKScore.reportScores([scoreObject], withCompletionHandler: { (error) -> Void in
+            if (error != nil) {
+                NSLog("Error in reporting leaderboard scores: \(error)")
+            }
+        })
+    }
+    
     func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
         presentingViewController = viewController
         
