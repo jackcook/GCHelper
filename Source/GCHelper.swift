@@ -67,8 +67,8 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     func lookupPlayers() {
         let playerIDs = match.players.map { ($0 as GKPlayer).playerID }
         
-        GKPlayer.loadPlayersForIdentifiers(playerIDs, withCompletionHandler: { (players, error) -> Void in
             if (error != nil) {
+        GKPlayer.loadPlayersForIdentifiers(playerIDs) { (players, error) -> Void in
                 println("Error retrieving player info: \(error.localizedDescription)")
                 self.matchStarted = false
                 self.delegate?.matchEnded()
@@ -82,7 +82,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
                 GKMatchmaker.sharedMatchmaker().finishMatchmakingForMatch(self.match)
                 self.delegate?.matchStarted()
             }
-        })
+        }
     }
     
     // MARK: User functions
@@ -124,22 +124,22 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         if let a = achievement {
             achievement!.percentComplete = percent
             achievement!.showsCompletionBanner = true
-            GKAchievement.reportAchievements([achievement!], withCompletionHandler: { (error) -> Void in
                 if (error != nil) {
                 }
-            })
+        GKAchievement.reportAchievements([achievement!]) { (error) -> Void in
                 println("Error in reporting achievements: \(error)")
+            }
         }
     }
     
     func reportLeaderboardIdentifier(identifier: String, score: Int) {
         var scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
-        GKScore.reportScores([scoreObject], withCompletionHandler: { (error) -> Void in
             if (error != nil) {
+        GKScore.reportScores([scoreObject]) { (error) -> Void in
                 println("Error in reporting leaderboard scores: \(error)")
             }
-        })
+        }
     }
     
     func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
