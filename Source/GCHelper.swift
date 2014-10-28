@@ -198,11 +198,9 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
         
         switch (state) {
-        case GKPlayerConnectionState.StateConnected:
-            if (!matchStarted && theMatch.expectedPlayerCount == 0) {
-                lookupPlayers()
-            }
-        case GKPlayerConnectionState.StateDisconnected:
+        case .StateConnected where !matchStarted && theMatch.expectedPlayerCount == 0:
+            lookupPlayers()
+        case .StateDisconnected:
             matchStarted = false
             delegate.matchEnded()
             match = nil
