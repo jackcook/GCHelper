@@ -55,11 +55,11 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     // MARK: Internal functions
     
     func authenticationChanged() {
-        if (GKLocalPlayer.localPlayer().authenticated && !authenticated) {
-            NSLog("Authentication changed: player authenticated")
+        if GKLocalPlayer.localPlayer().authenticated && !authenticated {
+            println("Authentication changed: player authenticated")
             authenticated = true
         } else {
-            NSLog("Authentication changed: player not authenticated")
+            println("Authentication changed: player not authenticated")
             authenticated = false
         }
     }
@@ -69,12 +69,12 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         
         GKPlayer.loadPlayersForIdentifiers(playerIDs, withCompletionHandler: { (players, error) -> Void in
             if (error != nil) {
-                NSLog("Error retrieving player info: \(error.localizedDescription)")
+                println("Error retrieving player info: \(error.localizedDescription)")
                 self.matchStarted = false
                 self.delegate?.matchEnded()
             } else {
                 for player in players {
-                    NSLog("Found player: \(player.alias)")
+                    println("Found player: \(player.alias)")
                     self.playersDict[player.playerID] = player
                 }
                 
@@ -88,17 +88,17 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     // MARK: User functions
     
     func authenticateLocalUser() {
-        NSLog("Authenticating local user...")
+        println("Authenticating local user...")
         if (GKLocalPlayer.localPlayer().authenticated == false) {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
                 if (error == nil) {
                     self.authenticated = true
                 } else {
-                    NSLog("\(error.localizedDescription)")
+                    println("\(error.localizedDescription)")
                 }
             }
         } else {
-            NSLog("Already authenticated")
+            println("Already authenticated")
         }
     }
     
@@ -126,9 +126,9 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             achievement!.showsCompletionBanner = true
             GKAchievement.reportAchievements([achievement!], withCompletionHandler: { (error) -> Void in
                 if (error != nil) {
-                    NSLog("Error in reporting achievements: \(error)")
                 }
             })
+                println("Error in reporting achievements: \(error)")
         }
     }
     
@@ -137,7 +137,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         scoreObject.value = Int64(score)
         GKScore.reportScores([scoreObject], withCompletionHandler: { (error) -> Void in
             if (error != nil) {
-                NSLog("Error in reporting leaderboard scores: \(error)")
+                println("Error in reporting leaderboard scores: \(error)")
             }
         })
     }
@@ -165,7 +165,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     func matchmakerViewController(viewController: GKMatchmakerViewController!, didFailWithError error: NSError!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
-        NSLog("Error finding match: \(error.localizedDescription)")
+        println("Error finding match: \(error.localizedDescription)")
     }
     
     func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch theMatch: GKMatch!) {
@@ -173,7 +173,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         match = theMatch
         match.delegate = self
         if (!matchStarted && match.expectedPlayerCount == 0) {
-            NSLog("Ready to start match!")
+            println("Ready to start match!")
             self.lookupPlayers()
         }
     }
@@ -210,7 +210,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             return
         }
         
-        NSLog("Match failed with error: \(error.localizedDescription)")
+        println("Match failed with error: \(error.localizedDescription)")
         matchStarted = false
         delegate?.matchEnded()
     }
