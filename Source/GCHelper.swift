@@ -65,10 +65,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func lookupPlayers() {
-        var playerIDs = [String]()
-        for player in match.players {
-            playerIDs.append(player.playerID)
-        }
+        let playerIDs = match.players.map { ($0 as GKPlayer).playerID }
         
         GKPlayer.loadPlayersForIdentifiers(playerIDs, withCompletionHandler: { (players, error) -> Void in
             if (error != nil) {
