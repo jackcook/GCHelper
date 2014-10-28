@@ -32,7 +32,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     var presentingViewController: UIViewController!
     var match: GKMatch!
-    var delegate: GCHelperDelegate!
+    var delegate: GCHelperDelegate?
     var playersDict = [String:AnyObject]()
     var invitedPlayer: GKPlayer!
     var invite: GKInvite!
@@ -74,7 +74,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             if (error != nil) {
                 NSLog("Error retrieving player info: \(error.localizedDescription)")
                 self.matchStarted = false
-                self.delegate.matchEnded()
+                self.delegate?.matchEnded()
             } else {
                 for player in players {
                     NSLog("Found player: \(player.alias)")
@@ -83,7 +83,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
                 
                 self.matchStarted = true
                 GKMatchmaker.sharedMatchmaker().finishMatchmakingForMatch(self.match)
-                self.delegate.matchStarted()
+                self.delegate?.matchStarted()
             }
         })
     }
@@ -188,7 +188,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             return
         }
         
-        delegate.match(theMatch, didReceiveData: data, fromPlayer: playerID)
+        delegate?.match(theMatch, didReceiveData: data, fromPlayer: playerID)
     }
     
     func match(theMatch: GKMatch!, player playerID: String!, didChangeState state: GKPlayerConnectionState) {
@@ -201,7 +201,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             lookupPlayers()
         case .StateDisconnected:
             matchStarted = false
-            delegate.matchEnded()
+            delegate?.matchEnded()
             match = nil
         default:
             break
@@ -215,7 +215,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         
         NSLog("Match failed with error: \(error.localizedDescription)")
         matchStarted = false
-        delegate.matchEnded()
+        delegate?.matchEnded()
     }
     
     // MARK: GKLocalPlayerListener
