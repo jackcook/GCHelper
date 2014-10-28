@@ -33,7 +33,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     var presentingViewController: UIViewController!
     var match: GKMatch!
     var delegate: GCHelperDelegate!
-    var playersDict = [:]
+    var playersDict = [String:AnyObject]()
     var invitedPlayer: GKPlayer!
     var invite: GKInvite!
     
@@ -76,10 +76,9 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
                 self.matchStarted = false
                 self.delegate.matchEnded()
             } else {
-                self.playersDict = NSMutableDictionary(capacity: players.count)
                 for player in players {
                     NSLog("Found player: \(player.alias)")
-                    self.playersDict.setValue(player, forKey: player.playerID)
+                    self.playersDict[player.playerID] = player
                 }
                 
                 self.matchStarted = true
