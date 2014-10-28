@@ -120,12 +120,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func reportAchievementIdentifier(identifier: String, percent: Double) {
-        var achievement: GKAchievement? = GKAchievement(identifier: identifier)
-        if let a = achievement {
-            achievement!.percentComplete = percent
-            achievement!.showsCompletionBanner = true
-                if (error != nil) {
-                }
+        let achievement = GKAchievement(identifier: identifier)
+        
+        achievement?.percentComplete = percent
+        achievement?.showsCompletionBanner = true
         GKAchievement.reportAchievements([achievement!]) { (error) -> Void in
                 println("Error in reporting achievements: \(error)")
             }
