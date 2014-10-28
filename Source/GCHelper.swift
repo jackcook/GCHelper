@@ -109,11 +109,11 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         delegate = theDelegate
         presentingViewController.dismissViewControllerAnimated(false, completion: nil)
         
-        var request = GKMatchRequest()
+        let request = GKMatchRequest()
         request.minPlayers = minPlayers
         request.maxPlayers = maxPlayers
         
-        var mmvc = GKMatchmakerViewController(matchRequest: request)
+        let mmvc = GKMatchmakerViewController(matchRequest: request)
         mmvc.matchmakerDelegate = self
         
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
@@ -131,7 +131,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func reportLeaderboardIdentifier(identifier: String, score: Int) {
-        var scoreObject = GKScore(leaderboardIdentifier: identifier)
+        let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
             if (error != nil) {
         GKScore.reportScores([scoreObject]) { (error) -> Void in
@@ -143,7 +143,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
         presentingViewController = viewController
         
-        var gcvc = GKGameCenterViewController()
+        let gcvc = GKGameCenterViewController()
         gcvc.viewState = viewState
         gcvc.gameCenterDelegate = self
         presentingViewController.presentViewController(gcvc, animated: true, completion: nil)
@@ -216,7 +216,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     // MARK: GKLocalPlayerListener
     
     func player(player: GKPlayer!, didAcceptInvite inviteToAccept: GKInvite!) {
-        var mmvc = GKMatchmakerViewController(invite: inviteToAccept)
+        let mmvc = GKMatchmakerViewController(invite: inviteToAccept)
         mmvc.matchmakerDelegate = self
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
