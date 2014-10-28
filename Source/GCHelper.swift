@@ -67,8 +67,8 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     func lookupPlayers() {
         let playerIDs = match.players.map { ($0 as GKPlayer).playerID }
         
-            if (error != nil) {
         GKPlayer.loadPlayersForIdentifiers(playerIDs) { (players, error) -> Void in
+            if error != nil {
                 println("Error retrieving player info: \(error.localizedDescription)")
                 self.matchStarted = false
                 self.delegate?.matchEnded()
@@ -125,6 +125,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         achievement?.percentComplete = percent
         achievement?.showsCompletionBanner = true
         GKAchievement.reportAchievements([achievement!]) { (error) -> Void in
+            if error != nil {
                 println("Error in reporting achievements: \(error)")
             }
         }
@@ -133,8 +134,8 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     func reportLeaderboardIdentifier(identifier: String, score: Int) {
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
-            if (error != nil) {
         GKScore.reportScores([scoreObject]) { (error) -> Void in
+            if error != nil {
                 println("Error in reporting leaderboard scores: \(error)")
             }
         }
@@ -204,7 +205,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func match(theMatch: GKMatch!, didFailWithError error: NSError!) {
-        if (match != theMatch) {
+        if match != theMatch {
             return
         }
         
