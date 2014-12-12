@@ -17,7 +17,7 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 ### Authenticating the User
 Before doing anything with Game Center, the user needs to be signed in. This instance is often configured in your app's `application:didFinishLaunchingWithOptions:` method
 
-```
+```swift
 func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
     GCHelper.sharedInstance.authenticateLocalUser()
 }
@@ -26,14 +26,14 @@ func application(application: UIApplication!, didFinishLaunchingWithOptions laun
 ### Creating a Match
 A match needs to be created in order for a multiplayer game to work.
 
-```
+```swift
 GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
 ```
 
 ### Sending Data
 Once a match has been created, you can send data between players with `NSData` objects.
 
-```
+```swift
 var success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: GKMatchSendDataMode.Reliable, error: nil)
 if (!success) {
     NSLog("An unknown error occured while sending data")
@@ -44,14 +44,14 @@ if (!success) {
 ### Report Achievement Progress
 If you have created any achievements in iTunes Connect, you can access those achievements and update their progress with this method. The `percent` value can be set to zero or 100 if percentages aren't used for this particular achievement.
 
-```
+```swift
 GKHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifierGoesHere", percent: 100.0)
 ```
 
 ### Show GKGameCenterViewController
 GCHelper also contains a method to display Apple's GameKit interfaces. These can be used to show achievements, leaderboards, or challenges, as is defined by the use of the `viewState` value. In this case, `self` is the presenting view controller.
 
-```
+```swift
 GCHelper.sharedInstance.showGameCenter(self, viewState: GKGameCenterViewControllerState.Achievements)
 ```
 ---
@@ -61,7 +61,7 @@ To receive updates about the match, there are three delegate methods that you ca
 ### Beginning of Match
 This method is fired when the match begins.
 
-```
+```swift
 func matchStarted() {
 }
 ```
@@ -69,7 +69,7 @@ func matchStarted() {
 ### End of Match
 This method is fired at the end of the match, whether it is due to an error such as a player being disconnected or you actually ending the match.
 
-```
+```swift
 func matchEnded() {
 }
 ```
@@ -77,7 +77,7 @@ func matchEnded() {
 ### Receiving Data
 I mentioned how to send data earlier, this is the method you would use to receive that data.
 
-```
+```swift
 func match(match: GKMatch, didReceiveData data: NSData, fromPlayer playerID: String) {
 }
 ```
