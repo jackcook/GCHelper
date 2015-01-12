@@ -1,6 +1,6 @@
 // GCHelper.swift (v. 0.1)
 //
-// Copyright (c) 2014 Jack Cook
+// Copyright (c) 2015 Jack Cook
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -89,9 +89,9 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     func authenticateLocalUser() {
         println("Authenticating local user...")
-        if (GKLocalPlayer.localPlayer().authenticated == false) {
+        if GKLocalPlayer.localPlayer().authenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
-                if (error == nil) {
+                if error == nil {
                     self.authenticated = true
                 } else {
                     println("\(error.localizedDescription)")
@@ -171,7 +171,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
         match = theMatch
         match.delegate = self
-        if (!matchStarted && match.expectedPlayerCount == 0) {
+        if !matchStarted && match.expectedPlayerCount == 0 {
             println("Ready to start match!")
             self.lookupPlayers()
         }
@@ -180,7 +180,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     // MARK: GKMatchDelegate
     
     func match(theMatch: GKMatch!, didReceiveData data: NSData!, fromPlayer playerID: String!) {
-        if (match != theMatch) {
+        if match != theMatch {
             return
         }
         
@@ -188,11 +188,11 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func match(theMatch: GKMatch!, player playerID: String!, didChangeState state: GKPlayerConnectionState) {
-        if (match != theMatch) {
+        if match != theMatch {
             return
         }
         
-        switch (state) {
+        switch state {
         case .StateConnected where !matchStarted && theMatch.expectedPlayerCount == 0:
             lookupPlayers()
         case .StateDisconnected:
