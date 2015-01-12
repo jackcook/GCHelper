@@ -16,8 +16,9 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 Before doing anything with Game Center, the user needs to be signed in. This instance is often configured in your app's `application:didFinishLaunchingWithOptions:` method
 
 ```swift
-func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
+func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     GCHelper.sharedInstance.authenticateLocalUser()
+    return true
 }
 ```
 
@@ -32,9 +33,9 @@ GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController
 Once a match has been created, you can send data between players with `NSData` objects.
 
 ```swift
-var success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: GKMatchSendDataMode.Reliable, error: nil)
-if (!success) {
-    NSLog("An unknown error occured while sending data")
+let success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable, error: nil)
+if !success {
+    println("An unknown error occured while sending data")
 }
 ```
 > I realize that this method isn't actually provided by GCHelper, but it's definitely worth noting in here.
@@ -50,7 +51,7 @@ GKHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifierGoesHe
 GCHelper also contains a method to display Apple's GameKit interfaces. These can be used to show achievements, leaderboards, or challenges, as is defined by the use of the `viewState` value. In this case, `self` is the presenting view controller.
 
 ```swift
-GCHelper.sharedInstance.showGameCenter(self, viewState: GKGameCenterViewControllerState.Achievements)
+GCHelper.sharedInstance.showGameCenter(self, viewState: .Achievements)
 ```
 ---
 ## GCHelperDelegate Methods
