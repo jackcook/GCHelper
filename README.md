@@ -44,7 +44,14 @@ if !success {
 If you have created any achievements in iTunes Connect, you can access those achievements and update their progress with this method. The `percent` value can be set to zero or 100 if percentages aren't used for this particular achievement.
 
 ```swift
-GKHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifierGoesHere", percent: 100.0)
+GCHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifier", percent: 35.4)
+```
+
+### Update Leaderboard Score
+Similarly to achievements, if you have created a leaderboard in iTunes Connect, you can set the score for the signed in account with this method.
+
+```swift
+GCHelper.sharedInstance.reportLeaderboardIdentifier("leaderboardIdentifier", score: 87)
 ```
 
 ### Show GKGameCenterViewController
