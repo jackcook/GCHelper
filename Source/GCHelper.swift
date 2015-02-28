@@ -40,6 +40,12 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     var matchStarted = false
     var authenticated = false
     
+    class var match: GKMatch {
+        get {
+            return GCHelper.sharedInstance.match
+        }
+    }
+    
     class var sharedInstance: GCHelper {
         struct Static {
             static let instance = GCHelper()
@@ -87,6 +93,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: User functions
     
+    class func authenticateLocalUser() {
+        GCHelper.sharedInstance.authenticateLocalUser()
+    }
+    
     func authenticateLocalUser() {
         println("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
@@ -100,6 +110,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         } else {
             println("Already authenticated")
         }
+    }
+    
+    class func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
+        GCHelper.sharedInstance.findMatchWithMinPlayers(minPlayers, maxPlayers: maxPlayers, viewController: viewController, delegate: theDelegate)
     }
     
     func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
@@ -119,6 +133,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
     
+    class func reportAchievementIdentifier(identifier: String, percent: Double) {
+        GCHelper.sharedInstance.reportAchievementIdentifier(identifier, percent: percent)
+    }
+    
     func reportAchievementIdentifier(identifier: String, percent: Double) {
         let achievement = GKAchievement(identifier: identifier)
         
@@ -131,6 +149,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
+    class func reportLeaderboardIdentifier(identifier: String, score: Int) {
+        GCHelper.sharedInstance.reportLeaderboardIdentifier(identifier, score: score)
+    }
+    
     func reportLeaderboardIdentifier(identifier: String, score: Int) {
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
@@ -139,6 +161,10 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
                 println("Error in reporting leaderboard scores: \(error)")
             }
         }
+    }
+    
+    class func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
+        GCHelper.sharedInstance.showGameCenter(viewController, viewState: viewState)
     }
     
     func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
