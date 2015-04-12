@@ -71,7 +71,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     }
     
     func lookupPlayers() {
-        let playerIDs = match.players.map { ($0 as GKPlayer).playerID }
+        let playerIDs = match.players.map { ($0 as! GKPlayer).playerID }
         
         GKPlayer.loadPlayersForIdentifiers(playerIDs) { (players, error) -> Void in
             if error != nil {
@@ -81,7 +81,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
             } else {
                 for player in players {
                     println("Found player: \(player.alias)")
-                    self.playersDict[player.playerID] = player
+                    self.playersDict[(player as! GKPlayer).playerID] = player
                 }
                 
                 self.matchStarted = true
