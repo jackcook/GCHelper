@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.2.1)
+// GCHelper.swift (v. 0.2.2)
 //
 // Copyright (c) 2015 Jack Cook
 //
@@ -41,7 +41,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     private var authenticated = false
     private var matchStarted = false
     
-    class var sharedInstance: GCHelper {
+    public class var sharedInstance: GCHelper {
         struct Static {
             static let instance = GCHelper()
         }
