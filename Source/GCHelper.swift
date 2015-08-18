@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.2.2)
+// GCHelper.swift (v. 0.2.3)
 //
 // Copyright (c) 2015 Jack Cook
 //
@@ -30,9 +30,9 @@ public protocol GCHelperDelegate {
 
 public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
     
-    var delegate: GCHelperDelegate?
-    var match: GKMatch!
+    public var match: GKMatch!
     
+    private var delegate: GCHelperDelegate?
     private var invite: GKInvite!
     private var invitedPlayer: GKPlayer!
     private var playersDict = [String:AnyObject]()
