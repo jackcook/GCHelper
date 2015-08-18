@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.2)
+// GCHelper.swift (v. 0.2.1)
 //
 // Copyright (c) 2015 Jack Cook
 //
@@ -22,29 +22,24 @@
 
 import GameKit
 
-protocol GCHelperDelegate {
+public protocol GCHelperDelegate {
     func matchStarted()
     func match(match: GKMatch, didReceiveData: NSData, fromPlayer: String)
     func matchEnded()
 }
 
-class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
+public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
     
-    var presentingViewController: UIViewController!
-    var match: GKMatch!
     var delegate: GCHelperDelegate?
-    var playersDict = [String:AnyObject]()
-    var invitedPlayer: GKPlayer!
-    var invite: GKInvite!
+    var match: GKMatch!
     
-    var matchStarted = false
-    var authenticated = false
+    private var invite: GKInvite!
+    private var invitedPlayer: GKPlayer!
+    private var playersDict = [String:AnyObject]()
+    private var presentingViewController: UIViewController!
     
-    class var match: GKMatch {
-        get {
-            return GCHelper.sharedInstance.match
-        }
-    }
+    private var authenticated = false
+    private var matchStarted = false
     
     class var sharedInstance: GCHelper {
         struct Static {
@@ -60,7 +55,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: Internal functions
     
-    func authenticationChanged() {
+    private func authenticationChanged() {
         if GKLocalPlayer.localPlayer().authenticated && !authenticated {
             println("Authentication changed: player authenticated")
             authenticated = true
@@ -70,7 +65,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
-    func lookupPlayers() {
+    private func lookupPlayers() {
         let playerIDs = match.players.map { ($0 as! GKPlayer).playerID }
         
         GKPlayer.loadPlayersForIdentifiers(playerIDs) { (players, error) -> Void in
@@ -93,11 +88,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: User functions
     
-    class func authenticateLocalUser() {
-        GCHelper.sharedInstance.authenticateLocalUser()
-    }
-    
-    func authenticateLocalUser() {
+    public func authenticateLocalUser() {
         println("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
@@ -112,11 +103,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
-    class func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
-        GCHelper.sharedInstance.findMatchWithMinPlayers(minPlayers, maxPlayers: maxPlayers, viewController: viewController, delegate: theDelegate)
-    }
-    
-    func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
+    public func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
         matchStarted = false
         match = nil
         presentingViewController = viewController
@@ -133,11 +120,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
     
-    class func reportAchievementIdentifier(identifier: String, percent: Double) {
-        GCHelper.sharedInstance.reportAchievementIdentifier(identifier, percent: percent)
-    }
-    
-    func reportAchievementIdentifier(identifier: String, percent: Double) {
+    public func reportAchievementIdentifier(identifier: String, percent: Double) {
         let achievement = GKAchievement(identifier: identifier)
         
         achievement?.percentComplete = percent
@@ -149,11 +132,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
-    class func reportLeaderboardIdentifier(identifier: String, score: Int) {
-        GCHelper.sharedInstance.reportLeaderboardIdentifier(identifier, score: score)
-    }
-    
-    func reportLeaderboardIdentifier(identifier: String, score: Int) {
+    public func reportLeaderboardIdentifier(identifier: String, score: Int) {
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
         GKScore.reportScores([scoreObject]) { (error) -> Void in
@@ -163,11 +142,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
-    class func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
-        GCHelper.sharedInstance.showGameCenter(viewController, viewState: viewState)
-    }
-    
-    func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
+    public func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
         presentingViewController = viewController
         
         let gcvc = GKGameCenterViewController()
@@ -178,22 +153,22 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: GKGameCenterControllerDelegate
     
-    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
+    public func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: GKMatchmakerViewControllerDelegate
     
-    func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController!) {
+    public func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func matchmakerViewController(viewController: GKMatchmakerViewController!, didFailWithError error: NSError!) {
+    public func matchmakerViewController(viewController: GKMatchmakerViewController!, didFailWithError error: NSError!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
         println("Error finding match: \(error.localizedDescription)")
     }
     
-    func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch theMatch: GKMatch!) {
+    public func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch theMatch: GKMatch!) {
         presentingViewController.dismissViewControllerAnimated(true, completion: nil)
         match = theMatch
         match.delegate = self
@@ -205,7 +180,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: GKMatchDelegate
     
-    func match(theMatch: GKMatch!, didReceiveData data: NSData!, fromPlayer playerID: String!) {
+    public func match(theMatch: GKMatch!, didReceiveData data: NSData!, fromPlayer playerID: String!) {
         if match != theMatch {
             return
         }
@@ -213,7 +188,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         delegate?.match(theMatch, didReceiveData: data, fromPlayer: playerID)
     }
     
-    func match(theMatch: GKMatch!, player playerID: String!, didChangeState state: GKPlayerConnectionState) {
+    public func match(theMatch: GKMatch!, player playerID: String!, didChangeState state: GKPlayerConnectionState) {
         if match != theMatch {
             return
         }
@@ -230,7 +205,7 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
         }
     }
     
-    func match(theMatch: GKMatch!, didFailWithError error: NSError!) {
+    public func match(theMatch: GKMatch!, didFailWithError error: NSError!) {
         if match != theMatch {
             return
         }
@@ -242,13 +217,13 @@ class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterContro
     
     // MARK: GKLocalPlayerListener
     
-    func player(player: GKPlayer!, didAcceptInvite inviteToAccept: GKInvite!) {
+    public func player(player: GKPlayer!, didAcceptInvite inviteToAccept: GKInvite!) {
         let mmvc = GKMatchmakerViewController(invite: inviteToAccept)
         mmvc.matchmakerDelegate = self
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
     
-    func player(player: GKPlayer!, didRequestMatchWithOtherPlayers playersToInvite: [AnyObject]!) {
+    public func player(player: GKPlayer!, didRequestMatchWithOtherPlayers playersToInvite: [AnyObject]!) {
         
     }
 }

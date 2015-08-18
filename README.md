@@ -12,14 +12,12 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 ---
 ## Implementation
 
-> In the latest version of GCHelper, class functions were implemented so that using `sharedInstance` is not necessary. It can still be used if you want to, though.
-
 ### Authenticating the User
 Before doing anything with Game Center, the user needs to be signed in. This instance is often configured in your app's `application:didFinishLaunchingWithOptions:` method
 
 ```swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    GCHelper.authenticateLocalUser()
+    GCHelper.sharedInstance.authenticateLocalUser()
     return true
 }
 ```
@@ -28,14 +26,14 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 A match needs to be created in order for a multiplayer game to work.
 
 ```swift
-GCHelper.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
+GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
 ```
 
 ### Sending Data
 Once a match has been created, you can send data between players with `NSData` objects.
 
 ```swift
-let success = GCHelper.match.sendDataToAllPlayers(data, withDataMode: .Reliable, error: nil)
+let success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable, error: nil)
 if !success {
     println("An unknown error occured while sending data")
 }
@@ -46,21 +44,21 @@ if !success {
 If you have created any achievements in iTunes Connect, you can access those achievements and update their progress with this method. The `percent` value can be set to zero or 100 if percentages aren't used for this particular achievement.
 
 ```swift
-GCHelper.reportAchievementIdentifier("achievementIdentifier", percent: 35.4)
+GCHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifier", percent: 35.4)
 ```
 
 ### Update Leaderboard Score
 Similarly to achievements, if you have created a leaderboard in iTunes Connect, you can set the score for the signed in account with this method.
 
 ```swift
-GCHelper.reportLeaderboardIdentifier("leaderboardIdentifier", score: 87)
+GCHelper.sharedInstance.reportLeaderboardIdentifier("leaderboardIdentifier", score: 87)
 ```
 
 ### Show GKGameCenterViewController
 GCHelper also contains a method to display Apple's GameKit interfaces. These can be used to show achievements, leaderboards, or challenges, as is defined by the use of the `viewState` value. In this case, `self` is the presenting view controller.
 
 ```swift
-GCHelper.showGameCenter(self, viewState: .Achievements)
+GCHelper.sharedInstance.showGameCenter(self, viewState: .Achievements)
 ```
 ---
 ## GCHelperDelegate Methods

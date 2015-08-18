@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   s.platform = :ios, "8.0"
-  s.source       = { :git => "https://github.com/jackcook/GCHelper.git", :tag => "0.2" }
+  s.source       = { :git => "https://github.com/jackcook/GCHelper.git", :tag => "0.2.1" }
   s.source_files = "Source/*.swift"
   s.framework = "GameKit"
 end
