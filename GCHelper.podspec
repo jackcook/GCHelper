@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GCHelper"
-  s.version      = "0.2"
+  s.version      = "0.2.1"
   s.summary      = "A lightweight helper for GameKit, written in Swift"
   s.homepage     = "https://github.com/jackcook/GCHelper"
   s.license      = { :type => "MIT", :file => "LICENSE" }
