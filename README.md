@@ -9,6 +9,7 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 - Create a match in...
 - Just about everything is do-able with just one line of code
 
+---
 ## Installation
 
 ### CocoaPods
@@ -29,6 +30,7 @@ pod 'GCHelper', '~> 0.2'
 
 If you prefer to not use a dependency manager, you can download GCHelper.swift and drag it into your project instead. Note that this eliminates the need to include the `import` statement at the top of your Swift files.
 
+---
 ## Implementation
 
 ### Authenticating the User
