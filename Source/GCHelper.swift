@@ -22,14 +22,23 @@
 
 import GameKit
 
+/// Custom delegate used to provide information to the application implementing GCHelper.
 public protocol GCHelperDelegate {
+    
+    /// Method called when a match has been initiated.
     func matchStarted()
+    
+    /// Method called when the device received data about the match from another device in the match.
     func match(match: GKMatch, didReceiveData: NSData, fromPlayer: String)
+    
+    /// Method called when the match has ended.
     func matchEnded()
 }
 
+/// A GCHelper instance represents a wrapper around a GameKit match.
 public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
     
+    /// The match object provided by GameKit.
     public var match: GKMatch!
     
     private var delegate: GCHelperDelegate?
@@ -41,6 +50,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     private var authenticated = false
     private var matchStarted = false
     
+    /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
     public class var sharedInstance: GCHelper {
         struct Static {
             static let instance = GCHelper()
@@ -88,6 +98,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     
     // MARK: User functions
     
+    /// Authenticates the user with their Game Center account if possible
     public func authenticateLocalUser() {
         println("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
@@ -103,6 +114,14 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
     }
     
+    /**
+        Attempts to pair up the user with other users who are also looking for a match.
+        
+        :param: minPlayers The minimum number of players required to create a match.
+        :param: maxPlayers The maximum number of players allowed to create a match.
+        :param: viewController The view controller to present required GameKit view controllers from.
+        :param: delegate The delegate receiving data from GCHelper.
+    */
     public func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
         matchStarted = false
         match = nil
@@ -120,6 +139,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
     
+    /**
+        Reports progress on an achievement to GameKit.
+        
+        :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
+        :param: percent A percentage value (0 - 100) stating how far the user has progressed on the achievement.
+    */
     public func reportAchievementIdentifier(identifier: String, percent: Double) {
         let achievement = GKAchievement(identifier: identifier)
         
@@ -132,6 +157,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
     }
     
+    /**
+        Reports a high score eligible for placement on a leaderboard to GameKit.
+        
+        :param: identifier A string that matches the identifier string used to create a leaderboard in iTunes Connect.
+        :param: score The score earned by the user.
+    */
     public func reportLeaderboardIdentifier(identifier: String, score: Int) {
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
@@ -142,6 +173,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
     }
     
+    /**
+        Presents the game center view controller provided by GameKit.
+        
+        :param: viewController The view controller to present GameKit's view controller from.
+        :param: viewState The state in which to present the new view controller.
+    */
     public func showGameCenter(viewController: UIViewController, viewState: GKGameCenterViewControllerState) {
         presentingViewController = viewController
         
@@ -224,6 +261,5 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     }
     
     public func player(player: GKPlayer!, didRequestMatchWithOtherPlayers playersToInvite: [AnyObject]!) {
-        
     }
 }
