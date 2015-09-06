@@ -15,12 +15,22 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 > In the latest version of GCHelper, class functions were implemented so that using `sharedInstance` is not necessary. It can still be used if you want to, though.
 
 ### Authenticating the User
-Before doing anything with Game Center, the user needs to be signed in. This instance is often configured in your app's `application:didFinishLaunchingWithOptions:` method
+Before doing anything with Game Center, the user needs to be signed in. This instance is often configured in your app's `application:didFinishLaunchingWithOptions:` method.
+
+You will have to call `authentaticateLocalUser:`, which can show an authentification dialog if the user is not logged in, in the specified UIViewController. Passing `nil` to the second parameter will make the dialog show in the root view controller.
 
 ```swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    GCHelper.authenticateLocalUser()
+    GCHelper.sharedInstance.authenticateLocalUser(showAuthDialogOnFailure: true, inViewController: nil)
     return true
+}
+```
+
+You can also configure the instance in another view controller, like so:
+
+```swift
+func authenticateGameCenterUser() {
+    GCHelper.sharedInstance.authenticateLocalUser(showAuthDialogOnFailure: true, inViewController: self)
 }
 ```
 

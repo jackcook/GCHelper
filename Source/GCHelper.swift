@@ -93,11 +93,21 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     
     // MARK: User functions
     
-    public func authenticateLocalUser() {
+    public func authenticateLocalUser(showAuthDialogOnFailure showAuthDialog: Bool, var inViewController viewController: UIViewController?) {
         print("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
-                if error == nil {
+                if showAuthDialog && view != nil {
+                    if viewController == nil {
+                        if let rootViewController = UIApplication.sharedApplication().delegate?.window??.rootViewController {
+                            viewController = rootViewController
+                        }
+                    }
+                    
+                    if let _viewController = viewController {
+                        _viewController.presentViewController(view!, animated: true, completion: nil)
+                    }
+                } else if error == nil {
                     self.authenticated = true
                 } else {
                     print("\(error?.localizedDescription)")
