@@ -105,7 +105,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
 
     /// Authenticates the user with their Game Center account if possible
     public func authenticateLocalUser() {
-        println("Authenticating local user...")
+        print("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
                 if error == nil {
