@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.2.5)
+// GCHelper.swift (v. 0.2.6)
 //
 // Copyright (c) 2015 Jack Cook
 //
@@ -65,7 +65,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
 
     // MARK: Internal functions
 
-    func authenticationChanged() {
+    internal func authenticationChanged() {
         if GKLocalPlayer.localPlayer().authenticated && !authenticated {
             print("Authentication changed: player authenticated")
             authenticated = true
