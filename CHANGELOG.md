@@ -4,7 +4,11 @@ GCHelper adheres to [Semantic Versioning](http://semver.org).
 
 ---
 
-## [0.2.5](https://github.com/jackcook/GCHelper/releases/tag/0.2.4) (09-19-2015)
+## [0.2.6](https://github.com/jackcook/GCHelper/releases/tag/0.2.6) (09-21-2015)
+
+* Fixed an issue with initializing GCHelper
+
+## [0.2.5](https://github.com/jackcook/GCHelper/releases/tag/0.2.5) (09-19-2015)
 
 * Updated the library to use Swift 2
 
