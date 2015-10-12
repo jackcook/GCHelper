@@ -162,6 +162,19 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
     }
 
+    
+    /**
+        Reset all reported achievements to GameKit. Very useful when debuging your game.
+    */
+    public func resetAllAchievements() {
+        GKAchievement.resetAchievementsWithCompletionHandler { (error) -> Void in
+            if error != nil {
+                print("Error reseting achievements: \(error)")
+            }
+        }
+    }
+    
+    
     /**
         Reports a high score eligible for placement on a leaderboard to GameKit.
 
