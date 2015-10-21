@@ -43,6 +43,17 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 }
 ```
 
+### Checking if user is authenticated
+You can know if the user is authenticated to Game Center by accessing `isUserAuthenticated` boolean :
+
+```swift
+if GCHelper.sharedInstance.isUserAuthenticated {
+  print("user is authenticated to Game Center")
+} else {
+  print("user is NOT authenticated to Game Center")
+}
+```
+
 ### Creating a Match
 A match needs to be created in order for a multiplayer game to work.
 
@@ -66,6 +77,12 @@ If you have created any achievements in iTunes Connect, you can access those ach
 
 ```swift
 GCHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifier", percent: 35.4)
+```
+
+You can choose optionally if you want to hide achievement banner, and if you want to add the percentage to present
+```swift
+// Will add 5% to previous avancement and will not show banner when complete
+GCHelper.sharedInstance.reportAchievementIdentifier("achievementIdentifier": String, percent: 5.0, showCompletionBanner: false, addToExistingAvancement: true)
 ```
 
 ### Update Leaderboard Score

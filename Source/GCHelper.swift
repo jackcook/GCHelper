@@ -57,6 +57,11 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
         return Static.instance
     }
+    
+    /// Allow to know if the user is authenticated to Game Center
+    public var isUserAuthenticated: Bool {
+        return self.authenticated
+    }
 
     override init() {
         super.init()
@@ -149,12 +154,14 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
 
         :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
         :param: percent A percentage value (0 - 100) stating how far the user has progressed on the achievement.
+        :param: optional boolean to show or not the achievement completed banner
+        :param: optional boolean to add or not the progress to the previous completion
     */
-    public func reportAchievementIdentifier(identifier: String, percent: Double) {
+    public func reportAchievementIdentifier(identifier: String, percent: Double, showCompletionBanner: Bool = true, addToExistingAvancement: Bool = false) {
         let achievement = GKAchievement(identifier: identifier)
 
-        achievement.percentComplete = percent
-        achievement.showsCompletionBanner = true
+        achievement.percentComplete = addToExistingAvancement ? achievement.percentComplete + percent : percent
+        achievement.showsCompletionBanner = showCompletionBanner
         GKAchievement.reportAchievements([achievement]) { (error) -> Void in
             if error != nil {
                 print("Error in reporting achievements: \(error)")
