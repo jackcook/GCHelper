@@ -154,6 +154,8 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
 
         :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
         :param: percent A percentage value (0 - 100) stating how far the user has progressed on the achievement.
+        :param: optional boolean to show or not the achievement completed banner
+        :param: optional boolean to add or not the progress to the previous completion
     */
     public func reportAchievementIdentifier(identifier: String, percent: Double, showCompletionBanner: Bool = true, addToExistingAvancement: Bool = false) {
         let achievement = GKAchievement(identifier: identifier)
