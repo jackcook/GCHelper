@@ -1,0 +1,14 @@
+PODS:
+  - GCHelper (0.1.0)
+
+DEPENDENCIES:
+  - GCHelper (from `../`)
+
+EXTERNAL SOURCES:
+  GCHelper:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GCHelper: 7bfa7bf7ecef8a5ab878c011c69c00c916d9a9db
+
+COCOAPODS: 0.39.0

@@ -1,0 +1,8 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'GCHelper_Tests', :exclusive => true do
+  pod 'GCHelper', :path => '../'
+
+  
+end

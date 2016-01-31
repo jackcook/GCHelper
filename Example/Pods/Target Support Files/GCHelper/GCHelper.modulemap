@@ -1,0 +1,6 @@
+framework module GCHelper {
+  umbrella header "GCHelper-umbrella.h"
+
+  export *
+  module * { export * }
+}
