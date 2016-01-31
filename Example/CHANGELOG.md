@@ -4,6 +4,10 @@ GCHelper adheres to [Semantic Versioning](http://semver.org).
 
 ---
 
+## [0.2.7](https://github.com/jackcook/GCHelper/releases/tag/0.2.7) (01-31-2016)
+
+* Updated repository to use the CocoaPods template
+
 ## [0.2.6](https://github.com/jackcook/GCHelper/releases/tag/0.2.6) (09-21-2015)
 
 * Fixed an issue with initializing GCHelper
