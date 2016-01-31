@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.2.7)
+// GCHelper.swift (v. 0.2.8)
 //
 // Copyright (c) 2016 Jack Cook
 //
