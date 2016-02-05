@@ -23,7 +23,7 @@
 import GameKit
 
 /// Custom delegate used to provide information to the application implementing GCHelper.
-public protocol GCHelperDelegate {
+public protocol GCHelperDelegate: class {
     
     /// Method called when a match has been initiated.
     func matchStarted()
@@ -41,11 +41,11 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     /// The match object provided by GameKit.
     public var match: GKMatch!
     
-    private var delegate: GCHelperDelegate?
+    private weak var delegate: GCHelperDelegate?
     private var invite: GKInvite!
     private var invitedPlayer: GKPlayer!
     private var playersDict = [String:AnyObject]()
-    private var presentingViewController: UIViewController!
+    private weak var presentingViewController: UIViewController!
     
     private var authenticated = false
     private var matchStarted = false
