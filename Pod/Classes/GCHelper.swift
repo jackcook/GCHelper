@@ -163,6 +163,17 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     }
     
     /**
+     Resets all achievements that have been reported to GameKit.
+    */
+    public func resetAllAchievements() {
+        GKAchievement.resetAchievementsWithCompletionHandler { (error) -> Void in
+            if error != nil {
+                print("Error resetting achievements: \(error)")
+            }
+        }
+    }
+    
+    /**
      Reports a high score eligible for placement on a leaderboard to GameKit.
      
      :param: identifier A string that matches the identifier string used to create a leaderboard in iTunes Connect.
