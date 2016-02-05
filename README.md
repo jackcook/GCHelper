@@ -23,7 +23,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'GCHelper', '~> 0.2'
+pod 'GCHelper', '~> 0.3'
 ```
 
 ### Manually
@@ -39,7 +39,7 @@ Before doing anything with Game Center, the user needs to be signed in. This ins
 ```swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 GCHelper.sharedInstance.authenticateLocalUser()
-return true
+    return true
 }
 ```
 
@@ -56,7 +56,7 @@ Once a match has been created, you can send data between players with `NSData` o
 ```swift
 let success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable, error: nil)
 if !success {
-println("An unknown error occured while sending data")
+    println("An unknown error occured while sending data")
 }
 ```
 > I realize that this method isn't actually provided by GCHelper, but it's definitely worth noting in here.
