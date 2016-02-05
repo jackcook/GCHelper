@@ -4,6 +4,11 @@ GCHelper adheres to [Semantic Versioning](http://semver.org).
 
 ---
 
+## [0.3](https://github.com/jackcook/GCHelper/releases/tag/0.3) (02-05-2016)
+
+* Resolved memory leaks by using weak delegates
+* Implemented a method to reset all reported achievements
+
 ## [0.2.8](https://github.com/jackcook/GCHelper/releases/tag/0.2.8) (01-31-2016)
 
 * Updated repository to use the CocoaPods template
