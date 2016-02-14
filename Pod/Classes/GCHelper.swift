@@ -50,6 +50,8 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     private var authenticated = false
     private var matchStarted = false
     
+    var completedAchievements = [String:GKAchievement]()
+    
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
     public class var sharedInstance: GCHelper {
         struct Static {
@@ -153,14 +155,50 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     public func reportAchievementIdentifier(identifier: String, percent: Double) {
         let achievement = GKAchievement(identifier: identifier)
         
-        achievement.percentComplete = percent
-        achievement.showsCompletionBanner = true
-        GKAchievement.reportAchievements([achievement]) { (error) -> Void in
-            if error != nil {
-                print("Error in reporting achievements: \(error)")
+        if (!isAchievementCompleted(achievementIdentifier: identifier))
+        {
+            achievement.percentComplete = percent
+            achievement.showsCompletionBanner = true
+            GKAchievement.reportAchievements([achievement]) { (error) -> Void in
+                if error != nil {
+                    print("Error in reporting achievements: \(error)")
+                }
             }
         }
     }
+    
+     public func loadCompletedAchievements()
+    {
+        GKAchievement.loadAchievementsWithCompletionHandler({( achievements, error) in
+            if (error != nil) {
+                   print("Error in loading achievements: \(error)")
+            }
+            else
+            if !(achievements==nil)
+               {
+                for anAchievement in achievements! {
+                 self.completedAchievements[anAchievement.identifier!] = anAchievement                    }
+                }
+            })
+
+    }
+    
+    public func isAchievementCompleted (achievementIdentifier achievementIdentifier: String) -> Bool{
+        
+        let lookupAchievement:GKAchievement? = completedAchievements[achievementIdentifier]
+
+        if let achievement = lookupAchievement {
+            if achievement.percentComplete != 100 {
+                return false
+            }
+            return true
+        }
+        else {
+            return false
+            
+        }
+    }
+    
     
     /**
      Resets all achievements that have been reported to GameKit.
