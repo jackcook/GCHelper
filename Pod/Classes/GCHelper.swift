@@ -50,7 +50,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     private var authenticated = false
     private var matchStarted = false
     
-    var completedAchievements = [String:GKAchievement]()
+    private var completedAchievements = [String:GKAchievement]()
     
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
     public class var sharedInstance: GCHelper {
