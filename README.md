@@ -13,7 +13,6 @@ GCHelper is a Swift implementation for GameKit built off of the GameKitHelper cl
 ## Installation
 
 ### CocoaPods
-
 You can add GCHelper to your project by adding it to your [Podfile](https://cocoapods.org).
 
 CocoaPods 0.36 adds support for libraries written in Swift through the use of embedded frameworks. To use GCHelper, it is important that you put the `use_frameworks!` flag in your Podfile.
@@ -27,7 +26,6 @@ pod 'GCHelper', '~> 0.3'
 ```
 
 ### Manually
-
 If you prefer to not use a dependency manager, you can download GCHelper.swift and drag it into your project instead. Note that this eliminates the need to include the `import` statement at the top of your Swift files.
 
 ---
@@ -38,7 +36,7 @@ Before doing anything with Game Center, the user needs to be signed in. This ins
 
 ```swift
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-GCHelper.sharedInstance.authenticateLocalUser()
+    GCHelper.sharedInstance.authenticateLocalUser()
     return true
 }
 ```
@@ -55,8 +53,8 @@ Once a match has been created, you can send data between players with `NSData` o
 
 ```swift
 let success = GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable, error: nil)
-if !success {
-    println("An unknown error occured while sending data")
+guard success else {
+    print("An unknown error occured while sending data")
 }
 ```
 > I realize that this method isn't actually provided by GCHelper, but it's definitely worth noting in here.
