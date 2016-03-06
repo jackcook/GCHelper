@@ -1,4 +1,4 @@
-// GCHelper.swift (v. 0.3)
+// GCHelper.swift (v. 0.3.1)
 //
 // Copyright (c) 2016 Jack Cook
 //
@@ -38,10 +38,12 @@ public protocol GCHelperDelegate: class {
 /// A GCHelper instance represents a wrapper around a GameKit match.
 public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
     
+    /// An array of retrieved achievements. `loadAllAchievements(completion:)` must be called in advance.
+    public var achievements = [String: GKAchievement]()
+    
     /// The match object provided by GameKit.
     public var match: GKMatch!
     
-    private var achievements = [String: GKAchievement]()
     private weak var delegate: GCHelperDelegate?
     private var invite: GKInvite!
     private var invitedPlayer: GKPlayer!
@@ -169,8 +171,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         }
     }
     
-    /// Loads all achievements into memory
-    public func loadAllAchivements() {
+    /**
+     Loads all achievements into memory
+     
+     :param: completion An optional completion block that fires after all achievements have been retrieved
+     */
+    public func loadAllAchivements(completion: (() -> Void)? = nil) {
         GKAchievement.loadAchievementsWithCompletionHandler { (achievements, error) -> Void in
             guard error == nil, let achievements = achievements else {
                 print("Error in loading achievements: \(error)")
@@ -182,6 +188,8 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
                     self.achievements[id] = achievement
                 }
             }
+            
+            completion?()
         }
     }
     

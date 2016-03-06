@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		D69B58E8DD67F81341EDE9AB /* Pods_GCHelper_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33A89235D6B957E1315930A /* Pods_GCHelper_Tests.framework */; };
-		EBCACA3B1C5E8690000CE21F /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = EBCACA3A1C5E8690000CE21F /* CHANGELOG.md */; };
+		EBE381651C8BDF0E0080A077 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = EBE381641C8BDF0E0080A077 /* CHANGELOG.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +22,7 @@
 		B8B45F7CB4CC80155B3417BA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C12EE95A3E4D6A720EA20224 /* Pods-GCHelper_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCHelper_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GCHelper_Tests/Pods-GCHelper_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E33A89235D6B957E1315930A /* Pods_GCHelper_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCHelper_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBCACA3A1C5E8690000CE21F /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		EBE381641C8BDF0E0080A077 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +78,7 @@
 			children = (
 				001ABD164253D9C17CB53ECD /* GCHelper.podspec */,
 				B8B45F7CB4CC80155B3417BA /* README.md */,
-				EBCACA3A1C5E8690000CE21F /* CHANGELOG.md */,
+				EBE381641C8BDF0E0080A077 /* CHANGELOG.md */,
 				B7CE159108F85296C814F9B3 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
@@ -222,7 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
-				EBCACA3B1C5E8690000CE21F /* CHANGELOG.md in Sources */,
+				EBE381651C8BDF0E0080A077 /* CHANGELOG.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
