@@ -41,16 +41,15 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     /// The match object provided by GameKit.
     public var match: GKMatch!
     
+    private var achievements = [String: GKAchievement]()
     private weak var delegate: GCHelperDelegate?
     private var invite: GKInvite!
     private var invitedPlayer: GKPlayer!
-    private var playersDict = [String:AnyObject]()
+    private var playersDict = [String: AnyObject]()
     private weak var presentingViewController: UIViewController!
     
     private var authenticated = false
     private var matchStarted = false
-    
-    private var allPossibleAchievementsDict = [String:GKAchievement]()
     
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
     public class var sharedInstance: GCHelper {
@@ -81,25 +80,26 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         let playerIDs = match.players.map { $0.playerID } as! [String]
         
         GKPlayer.loadPlayersForIdentifiers(playerIDs) { (players, error) -> Void in
-            if error != nil {
-                print("Error retrieving player info: \(error!.localizedDescription)")
+            guard error == nil else {
+                print("Error retrieving player info: \(error?.localizedDescription)")
                 self.matchStarted = false
                 self.delegate?.matchEnded()
-            } else {
-                guard let players = players else {
-                    print("Error retrieving players; returned nil")
-                    return
-                }
-                
-                for player in players {
-                    print("Found player: \(player.alias)")
-                    self.playersDict[player.playerID!] = player
-                }
-                
-                self.matchStarted = true
-                GKMatchmaker.sharedMatchmaker().finishMatchmakingForMatch(self.match)
-                self.delegate?.matchStarted()
+                return
             }
+            
+            guard let players = players else {
+                print("Error retrieving players; returned nil")
+                return
+            }
+            
+            for player in players {
+                print("Found player: \(player.alias)")
+                self.playersDict[player.playerID!] = player
+            }
+            
+            self.matchStarted = true
+            GKMatchmaker.sharedMatchmaker().finishMatchmakingForMatch(self.match)
+            self.delegate?.matchStarted()
         }
     }
     
@@ -110,11 +110,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         print("Authenticating local user...")
         if GKLocalPlayer.localPlayer().authenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
-                if error == nil {
-                    self.authenticated = true
-                } else {
-                    print("\(error?.localizedDescription)")
+                guard error == nil else {
+                    print("Authentication error: \(error?.localizedDescription)")
+                    return
                 }
+                
+                self.authenticated = true
             }
         } else {
             print("Already authenticated")
@@ -147,77 +148,64 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     }
     
     /**
-     Reports progress on an achievement to GameKit if the achievement hadn't been completed already
+     Reports progress on an achievement to GameKit if the achievement has not been completed already
      
      :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
      :param: percent A percentage value (0 - 100) stating how far the user has progressed on the achievement.
      */
-    public func reportAchievementIdentifier(identifier: String, percent: Double) {
+    public func reportAchievementIdentifier(identifier: String, percent: Double, showsCompletionBanner banner: Bool = true) {
         let achievement = GKAchievement(identifier: identifier)
         
-        if (!isAchievementCompleted(identifier: identifier))
-        {
+        if !achievementIsCompleted(identifier) {
             achievement.percentComplete = percent
-            achievement.showsCompletionBanner = true
+            achievement.showsCompletionBanner = banner
+            
             GKAchievement.reportAchievements([achievement]) { (error) -> Void in
-                if error != nil {
+                guard error == nil else {
                     print("Error in reporting achievements: \(error)")
+                    return
                 }
             }
         }
     }
     
-    
-    /**
-     Loads all existing achievements from GameKit and adds them to allPossibleAchievements dictionary.
-     
-     */
-    public func loadAllPossibleAchievementsDict()
-    {
-        GKAchievement.loadAchievementsWithCompletionHandler({( achievements, error) in
-            if (error != nil) {
+    /// Loads all achievements into memory
+    public func loadAllAchivements() {
+        GKAchievement.loadAchievementsWithCompletionHandler { (achievements, error) -> Void in
+            guard error == nil, let achievements = achievements else {
                 print("Error in loading achievements: \(error)")
+                return
             }
-            else
-                if !(achievements==nil)
-                {
-                    for anAchievement in achievements! {
-                        self.allPossibleAchievementsDict[anAchievement.identifier!] = anAchievement                    }
+            
+            for achievement in achievements {
+                if let id = achievement.identifier {
+                    self.achievements[id] = achievement
+                }
             }
-        })
-        
+        }
     }
     
     /**
      Checks if an achievement in allPossibleAchievements is already 100% completed
      
      :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
-     
      */
-    public func isAchievementCompleted (identifier: String) -> Bool{
-        
-        let lookupAchievement:GKAchievement? = allPossibleAchievementsDict[identifier]
-        
-        if let achievement = lookupAchievement {
-            if achievement.percentComplete != 100 {
-                return false
-            }
-            return true
+    public func achievementIsCompleted(identifier: String) -> Bool{
+        if let achievement = achievements[identifier] {
+            return achievement.percentComplete == 100
         }
-        else {
-            return false
-            
-        }
+        
+        return false
     }
-    
     
     /**
      Resets all achievements that have been reported to GameKit.
      */
     public func resetAllAchievements() {
         GKAchievement.resetAchievementsWithCompletionHandler { (error) -> Void in
-            if error != nil {
+            guard error == nil else {
                 print("Error resetting achievements: \(error)")
+                return
             }
         }
     }
@@ -232,8 +220,9 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
         GKScore.reportScores([scoreObject]) { (error) -> Void in
-            if error != nil {
+            guard error == nil else {
                 print("Error in reporting leaderboard scores: \(error)")
+                return
             }
         }
     }
