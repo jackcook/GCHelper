@@ -50,7 +50,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     fileprivate var playersDict = [String: AnyObject]()
     fileprivate weak var presentingViewController: UIViewController!
     
-    fileprivate var authenticated = false
+    fileprivate var authenticated = false {
+        didSet {
+            print("Authentication changed: player\(authenticated ? " " : " not ")authenticated")
+        }
+    }
+    
     fileprivate var matchStarted = false
     
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
@@ -66,14 +71,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name(rawValue: GKPlayerAuthenticationDidChangeNotificationName), object: nil)
     }
     
-    // MARK: Internal functions
+    // MARK: Private functions
     
-    internal func authenticationChanged() {
+    @objc fileprivate func authenticationChanged() {
         if GKLocalPlayer.localPlayer().isAuthenticated && !authenticated {
-            print("Authentication changed: player authenticated")
             authenticated = true
         } else {
-            print("Authentication changed: player not authenticated")
             authenticated = false
         }
     }
@@ -81,7 +84,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     fileprivate func lookupPlayers() {
         let playerIDs = match.players.map { $0.playerID } as! [String]
         
-        GKPlayer.loadPlayers(forIdentifiers: playerIDs) { (players, error) -> Void in
+        GKPlayer.loadPlayers(forIdentifiers: playerIDs) { (players, error) in
             guard error == nil else {
                 print("Error retrieving player info: \(error?.localizedDescription)")
                 self.matchStarted = false
@@ -110,6 +113,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     /// Authenticates the user with their Game Center account if possible
     public func authenticateLocalUser() {
         print("Authenticating local user...")
+        
         if GKLocalPlayer.localPlayer().isAuthenticated == false {
             GKLocalPlayer.localPlayer().authenticateHandler = { (view, error) in
                 guard error == nil else {
@@ -162,12 +166,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
             achievement.percentComplete = percent
             achievement.showsCompletionBanner = banner
             
-            GKAchievement.report([achievement], withCompletionHandler: { (error) -> Void in
+            GKAchievement.report([achievement]) { (error) in
                 guard error == nil else {
                     print("Error in reporting achievements: \(error)")
                     return
                 }
-            }) 
+            }
         }
     }
     
@@ -177,7 +181,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
      :param: completion An optional completion block that fires after all achievements have been retrieved
      */
     public func loadAllAchivements(_ completion: (() -> Void)? = nil) {
-        GKAchievement.loadAchievements { (achievements, error) -> Void in
+        GKAchievement.loadAchievements { (achievements, error) in
             guard error == nil, let achievements = achievements else {
                 print("Error in loading achievements: \(error)")
                 return
@@ -198,7 +202,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
      
      :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
      */
-    public func achievementIsCompleted(_ identifier: String) -> Bool{
+    public func achievementIsCompleted(_ identifier: String) -> Bool {
         if let achievement = achievements[identifier] {
             return achievement.percentComplete == 100
         }
@@ -210,7 +214,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
      Resets all achievements that have been reported to GameKit.
      */
     public func resetAllAchievements() {
-        GKAchievement.resetAchievements { (error) -> Void in
+        GKAchievement.resetAchievements { (error) in
             guard error == nil else {
                 print("Error resetting achievements: \(error)")
                 return
@@ -227,12 +231,12 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     public func reportLeaderboardIdentifier(_ identifier: String, score: Int) {
         let scoreObject = GKScore(leaderboardIdentifier: identifier)
         scoreObject.value = Int64(score)
-        GKScore.report([scoreObject], withCompletionHandler: { (error) -> Void in
+        GKScore.report([scoreObject]) { (error) in
             guard error == nil else {
                 print("Error in reporting leaderboard scores: \(error)")
                 return
             }
-        }) 
+        }
     }
     
     /**
