@@ -4,6 +4,10 @@ GCHelper adheres to [Semantic Versioning](http://semver.org).
 
 ---
 
+## [0.4.1](https://github.com/jackcook/GCHelper/releases/tag/0.4.1) (09-25-2016)
+
+* Updated the library to use Swift 3
+
 ## [0.3.1](https://github.com/jackcook/GCHelper/releases/tag/0.3.1) (03-05-2016)
 
 * Added methods to enhance the handling of achievements

@@ -180,7 +180,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
      
      :param: completion An optional completion block that fires after all achievements have been retrieved
      */
-    public func loadAllAchivements(_ completion: (() -> Void)? = nil) {
+    public func loadAllAchievements(_ completion: (() -> Void)? = nil) {
         GKAchievement.loadAchievements { (achievements, error) in
             guard error == nil, let achievements = achievements else {
                 print("Error in loading achievements: \(error)")

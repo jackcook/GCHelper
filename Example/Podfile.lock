@@ -1,5 +1,5 @@
 PODS:
-  - GCHelper (0.1.0)
+  - GCHelper (0.4)
 
 DEPENDENCIES:
   - GCHelper (from `../`)
@@ -9,6 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GCHelper: 7bfa7bf7ecef8a5ab878c011c69c00c916d9a9db
+  GCHelper: f72da0ef55a7f377df3cf19660fccb04228eaa88
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 48db1f9e069b69a848a12d1d8a59d09bb18826d0
+
+COCOAPODS: 1.1.0.rc.2
