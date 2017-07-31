@@ -1,6 +1,6 @@
-// GCHelper.swift (v. 0.4.4)
+// GCHelper.swift (v. 0.4.5)
 //
-// Copyright (c) 2016 Jack Cook
+// Copyright (c) 2017 Jack Cook
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,8 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name.GKPlayerAuthenticationDidChangeNotificationName, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name(rawValue: GKPlayerAuthenticationDidChangeNotificationName), object: nil)
     }
     
     // MARK: Private functions
