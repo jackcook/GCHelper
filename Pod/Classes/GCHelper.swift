@@ -69,7 +69,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     override init() {
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name(rawValue: GKPlayerAuthenticationDidChangeNotificationName), object: nil)
+        NotificationCenter.default.addObserver(self, selector: nil, name:NSNotification.Name.GKPlayerAuthenticationDidChangeNotificationName, object: nil)
     }
     
     // MARK: Private functions
