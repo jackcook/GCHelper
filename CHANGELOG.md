@@ -4,6 +4,14 @@ GCHelper adheres to [Semantic Versioning](http://semver.org).
 
 ---
 
+## [0.5](https://github.com/jackcook/GCHelper/releases/tag/0.5) (10-08-2017)
+
+* Updated project for Swift 4
+
+## [0.4.5](https://github.com/jackcook/GCHelper/releases/tag/0.4.5) (07-31-2017)
+
+* Updated build settings
+
 ## [0.4.2](https://github.com/jackcook/GCHelper/releases/tag/0.4.2) (07-09-2017)
 
 * Resolved a few warnings in Xcode 8.3

@@ -22,7 +22,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'GCHelper', '~> 0.3'
+pod 'GCHelper', '~> 0.5'
 ```
 
 ### Manually
