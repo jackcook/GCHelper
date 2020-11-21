@@ -59,8 +59,9 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     fileprivate var matchStarted = false
     
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
-    public class var sharedInstance: GCHelper {
+    public class var shared: GCHelper {
         struct Static {
+
             static let instance = GCHelper()
         }
         return Static.instance
