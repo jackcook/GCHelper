@@ -1,12 +1,12 @@
 import XCTest
-@testable import GameKitHelper
+@testable import GCHelper
 
-final class GameKitHelper_Tests: XCTestCase {
+final class GCHelper_Tests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        // XCTAssertEqual(GameKitHelper(), "Hello, World!")
+        // XCTAssertEqual(GCHelper(), "Hello, World!")
     }
 
     static var allTests = [

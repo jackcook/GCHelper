@@ -23,7 +23,7 @@
 import GameKit
 
 /// Custom delegate used to provide information to the application implementing GCHelper.
-public protocol GameKitHelperDelegate: class {
+public protocol GCHelperDelegate: class {
     
     /// Method called when a match has been initiated.
     func matchStarted()
@@ -36,7 +36,7 @@ public protocol GameKitHelperDelegate: class {
 }
 
 /// A GCHelper instance represents a wrapper around a GameKit match.
-public class GameKitHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
+public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCenterControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
     
     /// An array of retrieved achievements. `loadAllAchievements(completion:)` must be called in advance.
     public var achievements = [String: GKAchievement]()
@@ -44,7 +44,7 @@ public class GameKitHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGame
     /// The match object provided by GameKit.
     public var match: GKMatch!
     
-    fileprivate weak var delegate: GameKitHelperDelegate?
+    fileprivate weak var delegate: GCHelperDelegate?
     fileprivate var invite: GKInvite!
     fileprivate var invitedPlayer: GKPlayer!
     fileprivate var playersDict = [String: AnyObject]()
@@ -59,10 +59,10 @@ public class GameKitHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGame
     fileprivate var matchStarted = false
     
     /// The shared instance of GCHelper, allowing you to access the same instance across all uses of the library.
-    public class var shared: GameKitHelper {
+    public class var shared: GCHelper {
         struct Static {
 
-            static let instance = GameKitHelper()
+            static let instance = GCHelper()
         }
         return Static.instance
     }
@@ -70,7 +70,7 @@ public class GameKitHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGame
     override init() {
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GameKitHelper.authenticationChanged), name: Notification.Name.GKPlayerAuthenticationDidChangeNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: Notification.Name.GKPlayerAuthenticationDidChangeNotificationName, object: nil)
     }
     
     // MARK: Private functions
@@ -138,7 +138,7 @@ public class GameKitHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGame
      :param: viewController The view controller to present required GameKit view controllers from.
      :param: delegate The delegate receiving data from GCHelper.
      */
-    public func findMatchWithMinPlayers(_ minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GameKitHelperDelegate) {
+    public func findMatchWithMinPlayers(_ minPlayers: Int, maxPlayers: Int, viewController: UIViewController, delegate theDelegate: GCHelperDelegate) {
         matchStarted = false
         match = nil
         presentingViewController = viewController
